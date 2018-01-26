@@ -9,9 +9,7 @@ user_list = []
 
 def tcp_link( sock, addr):
     print('accept new connection from %s:%s...' % addr)
-   # sock.send(b'hello你好啊123\n')
-    #sock.send(bytes('hello你好啊123\n', 'utf-8'))
-    sock.send(bytes('hello你好啊123', 'utf-8'))
+    sock.send(b'hello\n')
     show_list()
     while True:
         try:
@@ -24,8 +22,7 @@ def tcp_link( sock, addr):
             break
         #bianma = chardet.detect(data)
         #print("编码 %s" % bianma)
-        #redv_data = str(data,encoding='ascii')
-        redv_data = str(data, encoding='utf-8')
+        redv_data = str(data,encoding='ascii')
         redv_data =redv_data.strip().replace('\r\n','').replace('\n', '')
         if redv_data == 'mass':
             send_all()
@@ -54,12 +51,10 @@ def remove(sock):
             break
     return
 
-
 def send_all():
     print("*******send_all print******")
     for a in user_list:
-        #a[0].send(bytes('NOTICE\r\n','utf-8'))
-        a[0].sendall(b'\x00')
+        a[0].send(bytes('NOTICE\n','utf-8'))
     print("*******send_all print******")
 
 def show_list():
@@ -72,7 +67,7 @@ def show_list():
     print("*******list print******")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('0.0.0.0', 1000))
+s.bind(('0.0.0.0', 20087))
 s.listen(10)
 print('listening port 20087')
 while True:
